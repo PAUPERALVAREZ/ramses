@@ -40,6 +40,8 @@ class Euclideo:
         self.sumPrm_2[mod] += senyal ** 2
         self.numSen[mod] += 1
 
+
+
     def recaEval(self):
         distancia_2 = 0
         totSen = 0
