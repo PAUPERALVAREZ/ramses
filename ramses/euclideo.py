@@ -4,11 +4,10 @@ import numpy as np
 class Euclideo:
     def __init__(self, ficMod=None, ficLisUni=None):
         if ficMod and ficLisUni or not ficMod and not ficLisUni:
-            raise ValueError("Lee las instrucciones BOBO")
-        
+            raise ValueError("aprende a leer (instrucciones)")
         if ficMod:
             self.leeMod(ficMod)
-        else: 
+        else:
             self.unidades = leeLis(ficLisUni)
             self.medUni = {}
 
@@ -40,8 +39,8 @@ class Euclideo:
     def addEval(self, mod, senyal):
         self.sumPrm_2[mod] += senyal ** 2
         self.numSen[mod] += 1
-    
-    def recalEval(self):
+
+    def recaEval(self):
         distancia_2 = 0
         totSen = 0
         for unidad in self.unidades:
@@ -50,6 +49,6 @@ class Euclideo:
 
         self.distancia = (np.sum(distancia_2) / totSen) ** 0.5
 
+
     def printEval(self):
         print(f'{self.distancia = :.2f}')
-

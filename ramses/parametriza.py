@@ -16,12 +16,12 @@ def parametriza(dirPrm, dirSen, *guiSen):
     
     En la versión trivial, la señal parametrizada es igual a la señal temporal.
     """
-    eps=5
+    eps = 10 # Valor que afegim per evitar fer logaritme de 0 en la linia 24 (segons el valor i la base de dades, millor a o empitjora)
     for nomSen in tqdm.tqdm(leeLis(*guiSen)):
         pathSen = pathName(dirSen, nomSen, "wav")
         sen, fm = sf.read(pathSen)
 
-        prm = np.log(eps + np.abs((np.fft.fft(sen))))
+        prm = np.log(eps + np.abs(np.fft.fft(sen)))
 
         pathPrm = pathName(dirPrm, nomSen, ".prm")
         chkPathName(pathPrm)

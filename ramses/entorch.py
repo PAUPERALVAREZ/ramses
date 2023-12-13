@@ -2,7 +2,6 @@
 
 import tqdm
 from euclideo import Euclideo
-
 from util import *
 from prm import *
 from mar import *
@@ -43,7 +42,6 @@ def entorch(dirMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
     # Inicializamos las estructuras necesarias para acumular en ellas los datos de las
     # señales de evaluación.
     modelo.initEval()
-
     # Bucle para todas las señales que forman el lote de evaluación
     for sen in tqdm.tqdm(leeLis(*guiSen)):
         # Cargamos los datos de la señal de evaluación
@@ -57,7 +55,7 @@ def entorch(dirMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
         modelo.addEval(mod, prm)
 
     # Recalculamos la información de evaluación
-    modelo.recalEval()
+    modelo.recaEval()
 
     # Mostramos en pantalla el resultado de la evaluación
     modelo.printEval()
