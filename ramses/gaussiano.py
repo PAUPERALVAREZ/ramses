@@ -1,7 +1,8 @@
 from util import *
 import numpy as np
+import scipy
 
-class Euclideo:
+class Gaussiano:
     def __init__(self, ficMod=None, ficLisUni=None):
         if ficMod and ficLisUni or not ficMod and not ficLisUni:
             raise ValueError("aprende a leer (instrucciones)")
@@ -14,32 +15,43 @@ class Euclideo:
     def escMod(self, ficMod):
         with open(ficMod, 'wb') as fpMod:
             np.save(fpMod, self.medUni)
+            np.save(fpMod, self.varUni)
 
     def leeMod(self, ficMod):
         with open(ficMod, 'rb') as fpMod:
             self.medUni = np.load(fpMod, allow_pickle=True).item()
+            self.varUni = np.load(fpMod, allow_pickle=True).item()
             self.unidades = self.medUni.keys()
+            #self.gaussiana = scipy.stats.multivariate_normal(self.medUni, self.varUni)
 
     def initEnt(self):
         self.sumPrm = {unidad: 0 for unidad in self.unidades}
         self.numSen = {unidad: 0 for unidad in self.unidades}
 
-    def __add__(self, mod, senyal):
-        self.sumPrm[mod] += senyal
+        self.sumPrm2 = {unidad: 0 for unidad in self.unidades}
+
+    def __add__(self, mod, prm):
+        self.sumPrm[mod] += prm
         self.numSen[mod] += 1
 
+        self.sumPrm2[mod] += prm**2
+
     def __call__(self, prm):
-        minDist = np.inf
+        maxProb = -np.inf
         for mod in self.unidades:
-            dist = sum(abs(prm - self.medUni[mod]) ** 2)
-            if dist < minDist:
-                minDist = dist
+            #prob = scipy.stats.multivariate_normal(self.medUni[mod], self.varUni[mod]).logpdf(prm)
+            prob = np.random.multivariate_normal(self.medUni[mod], np.diag(self.varUni[mod])).logpdf(prm)
+            if prob > maxProb:
+                maxProb = prob
                 rec = mod
         return rec
 
     def recalMod(self):
+        self.medUni={}
+        self.varUni={}
         for unidad in self.unidades:
             self.medUni[unidad] = self.sumPrm[unidad] / self.numSen[unidad]
+            self.varUni[unidad] = self.sumPrm2[unidad] / self.numSen[unidad] -self.medUni[unidad]**2
 
     def initEval(self):
         self.sumPrm_2 = {unidad: 0 for unidad in self.unidades}
@@ -61,3 +73,4 @@ class Euclideo:
     def printEval(self):
         print(f'{self.distancia = :.2f}')
 
+    

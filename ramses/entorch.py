@@ -2,11 +2,12 @@
 
 import tqdm
 from euclideo import Euclideo
+from gaussiano import Gaussiano
 from util import *
 from prm import *
 from mar import *
 
-def entorch(dirMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
+def entorch(ficMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
     """
     Entrena los modelos acústicos de las unidades encontradas en los ficheros de
     entrenamiento, indicados en el fichero guía 'guiSen' escribiendo el resultado en
@@ -18,7 +19,7 @@ def entorch(dirMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
     """
 
     # Construimos o leemos el modelo inicial
-    modelo = Euclideo(ficIni, ficLisUni)
+    modelo = Gaussiano(ficIni, ficLisUni)
 
     # Inicializamos las estructuras necesarias para acumular en ellas los datos de las
     # señales de entrenamiento.
@@ -61,7 +62,8 @@ def entorch(dirMod, ficIni, dirMar, dirPrm, ficLisUni, *guiSen):
     modelo.printEval()
 
     # Escribimos el modelo resultante
-    modelo.escMod(dirMod)
+    chkPathName(ficMod)
+    modelo.escMod(ficMod)
 
 
 #################################################################################
@@ -83,8 +85,8 @@ Usage:
 Opciones:
     -p PATH, --dirPrm=PATH  Directorio con las señales parametrizadas [default: .]
     -a PATH, --dirMar=PATH  Directorio con los ficheros de marcas [default: .]
-    -i PATH, --dirIni=PATH  Directorio con los modelos iniciales
-    -m PATH, --dirMod=PATH  Directorio con los modelos resultantes [default: .]
+    -i PATH, --ficIni=PATH  Directorio con los modelos iniciales
+    -m PATH, --ficMod=PATH  Fichero con el modelo resultante [default: .]
 
 Argumentos:
     <lisUni>   Fichero con la lista de unidades fonéticas.
@@ -101,10 +103,10 @@ Entrenamiento:
 
     dirPrm = args['--dirPrm']
     dirMar = args['--dirMar']
-    dirMod = args['--dirMod']
-    dirIni = args['--dirIni'] if '--dirIni' in args else None
+    ficMod = args['--ficMod']
+    ficIni = args['--ficIni'] if '--ficIni' in args else None
 
     lisUni = args['<lisUni>']
     guiSen = args['<guiSen>']
 
-    entorch(dirMod, dirIni, dirMar, dirPrm, lisUni, *guiSen)
+    entorch(ficMod, ficIni, dirMar, dirPrm, lisUni, *guiSen)

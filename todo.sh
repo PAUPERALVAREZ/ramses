@@ -53,7 +53,7 @@ dirrec="-r $DIR_REC"
 dirprm="-p $DIR_PRM"
 dirmod="-m $DIR_MOD"
 lismod="-l $LisMod"
-exec="reconoce.py $dirrec $dirprm $dirmod $lismod $GuiDev"
+exec="recorch.py $dirrec $dirprm $dirmod $lismod $GuiDev"
 
 $REC && echo $exec && $exec || exit 1
 
