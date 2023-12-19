@@ -21,7 +21,7 @@ def parametriza(dirPrm, dirSen, *guiSen):
         pathSen = pathName(dirSen, nomSen, "wav")
         sen, fm = sf.read(pathSen)
 
-        prm = np.log(eps + np.abs(np.fft.fft(sen)))
+        prm = np.real(np.fft.ifft(np.log(eps + np.abs(np.fft.fft(sen)))))[1:25]
 
         pathPrm = pathName(dirPrm, nomSen, ".prm")
         chkPathName(pathPrm)

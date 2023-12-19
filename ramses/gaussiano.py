@@ -1,6 +1,7 @@
 from util import *
 import numpy as np
 import scipy
+from scipy import stats
 
 class Gaussiano:
     def __init__(self, ficMod=None, ficLisUni=None):
@@ -22,7 +23,10 @@ class Gaussiano:
             self.medUni = np.load(fpMod, allow_pickle=True).item()
             self.varUni = np.load(fpMod, allow_pickle=True).item()
             self.unidades = self.medUni.keys()
-            #self.gaussiana = scipy.stats.multivariate_normal(self.medUni, self.varUni)
+
+        self.gaussiana = {}
+        for unidad in self.unidades:
+            self.gaussiana[unidad] = scipy.stats.multivariate_normal(self.medUni[unidad], self.varUni[unidad])
 
     def initEnt(self):
         self.sumPrm = {unidad: 0 for unidad in self.unidades}
@@ -39,8 +43,8 @@ class Gaussiano:
     def __call__(self, prm):
         maxProb = -np.inf
         for mod in self.unidades:
-            #prob = scipy.stats.multivariate_normal(self.medUni[mod], self.varUni[mod]).logpdf(prm)
-            prob = np.random.multivariate_normal(self.medUni[mod], np.diag(self.varUni[mod])).logpdf(prm)
+            prob = self.gaussiana[mod].logpdf(prm)
+            
             if prob > maxProb:
                 maxProb = prob
                 rec = mod
